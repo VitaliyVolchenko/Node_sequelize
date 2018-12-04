@@ -11,9 +11,9 @@ const db = require('./models/index');
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+app.use('/uploads', express.static('uploads'));
 // app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 // app.set('view engine', 'handlebars')
-
 
 // Routes
 app.use('/divides', divideRoutes);
