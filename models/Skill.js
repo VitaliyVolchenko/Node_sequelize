@@ -1,11 +1,17 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Skill = sequelize.define('Skill', {
-    name: DataTypes.STRING
-  }, {});
+    name: DataTypes.STRING,
+    divide_id: DataTypes.INTEGER,
+  }, { tableName: 'skills'});
   Skill.associate = function(models) {
     // Skill belongsTo Divide
-    Skill.belongsTo(models.Divide, { foreignKey: 'divide_id' });
+    Skill.belongsTo(models.Divide,
+      {
+        foreignKey: {
+          allowNull: true
+        }
+      });
   };
   return Skill;
 };

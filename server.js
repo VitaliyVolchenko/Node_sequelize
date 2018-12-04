@@ -3,11 +3,10 @@ const app = express();
 const bodyParser = require('body-parser');
 const path = require('path');
 const PORT = process.env.PORT || 3000;
-// const Divide = require('./models').Divide;
-// const Skill = require('./models').Skill;
 
 const divideRoutes = require('./routes/divide');
 const skillRoutes = require('./routes/skill');
+const db = require('./models/index');
 //const exphbs  = require('express-handlebars');
 
 app.use(bodyParser.urlencoded({extended: true}));
@@ -18,9 +17,14 @@ app.use(bodyParser.json());
 
 // Routes
 app.use('/divides', divideRoutes);
-//app.use('/skills', skillRoutes);
+app.use('/skills', skillRoutes);
 
 // Server Listen
+// db.sequelize.sync({force:true}).then(function(){
+//   app.listen(PORT, ()=> console.log(`Our server is live on port ${PORT}`));
+// });
+
 app.listen(PORT, ()=> console.log(`Our server is live on port ${PORT}`));
+
 
 module.exports = app;

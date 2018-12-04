@@ -7,6 +7,12 @@ module.exports = {
       divide_id: '1',
       createdAt: new Date(),
       updatedAt: new Date()     
+    },
+    {
+      name: 'bootstrap',
+      divide_id: '2',
+      createdAt: new Date(),
+      updatedAt: new Date()     
     }], {});
   },
 
