@@ -45,8 +45,7 @@ router.get('/:id', function (req, res){
   Divide.findAll({
     where: {
       id: req.params.id
-    },
-     //include: [Skill]
+    },     
      include: [{
       model: Skill,
       'as': 'skills'}]
