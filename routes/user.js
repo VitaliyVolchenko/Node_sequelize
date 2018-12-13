@@ -3,6 +3,7 @@ const router = express.Router();
 const User = require('../models').User;
 //const db = require('../models/index');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 router.get('/', function (req, res){
   User.findAll({    
@@ -12,11 +13,7 @@ router.get('/', function (req, res){
 });
 
 router.post('/', function (req, res){
-  User.findAll({    
-    where: {
-        email: req.params.email
-    }
-  })  
+  User.find({ where: { email: req.body.email} })
   .then(user => {
     if (user){
       return res.status(409).json({
@@ -51,22 +48,37 @@ router.post('/', function (req, res){
   });  
 });
 
-router.post('/login', function (req, res){
-  User.findAll({    
+router.post('/login', function (req, res, next){
+  User.findAll({
     where: {
-        email: req.params.email
+      email: req.body.email
     }
-  })
+   })   
   .then(user => {
     if(user.length < 1) {
       return res.status(404).json({
         message: 'Mail not found, user doesn\'t exist'
       });
     }
-    bcrypt.compare(req.body.password, user[0].password, (req, res) => {
+    bcrypt.compare(req.body.password, user[0].password, ( err, result ) => {
       if(err) {
         return res.status(401).json({
-          message: 'Auth faild'
+          message: 'Auth failed'
+        });
+      }
+      if (result) {
+        const token = jwt.sign({
+            email: user[0].email,
+            userId: user[0]._id
+          },
+          'secretkey',
+          {
+            expiresIn: "1h"
+          }
+        );
+        return res.status(200).json({
+          message: "Auth successful", 
+          token: token
         });
       }
     });
